@@ -4,9 +4,6 @@ A tiny clojure lib with a `try+` macro that lets you catch
 `ExceptionInfo` objects based on their contents. Requires Clojure 1.4
 or more recent, of course.
 
-Also I haven't actually written the code yet. But I swear I'm about to
-I just have to go home and have dinner first.
-
 ## Wait what about Slingshot?
 
 At the moment slingshot doesn't deal fluently with `ExceptionInfo`
@@ -29,8 +26,9 @@ passed the map inside the exception. The second is a binding for the
 map. When using map destructuring, you can use the special `:ex` key
 to get a handle on the exception object itself.
 
-`catch-data` can be used with a regular `catch`, but all `catch-data`
-clauses must appear before any `catch` clauses.
+`catch-data` clauses can be intermingled with `catch` clauses, and
+each will be tried in order. Currently `try+` compiles to a single
+`catch` clause with a `cond` as the body.
 
 ## License
 
