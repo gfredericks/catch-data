@@ -12,6 +12,8 @@ it has a lot of unnecessary features.
 
 ## Usage
 
+Leiningen: `[com.gfredericks/catch-data "0.1.0"]`
+
 ``` clojure
 (require '[com.gfredericks.catch-data :refer [try+]])
 
