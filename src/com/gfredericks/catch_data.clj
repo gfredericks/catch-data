@@ -10,7 +10,7 @@
   (and (seq? x) (= 'finally (first x))))
 
 (defn ^:private cond-clause
-  [clause throwable-sym]
+  [clause throwable-sym data-sym]
   (let [[handler-name pred binder & body] clause]
     (cond
      (= 'catch handler-name)
@@ -19,10 +19,10 @@
 
      (= 'catch-data handler-name)
      (let [condition
-           `(and (instance? clojure.lang.IExceptionInfo ~throwable-sym)
-                 (~pred (ex-data ~throwable-sym)))
-
-           data-name (gensym "data")
+           ;; The first part of this and expression checks if the
+           ;; throwable was an IExceptionInfo, because ex-data would
+           ;; have returned nil otherwise
+           `(and ~data-sym (~pred ~data-sym))
 
            ex-name (or (:ex binder) throwable-sym)
            binder (if (map? binder)
@@ -31,7 +31,7 @@
 
            wrapped-form
            `(let [~ex-name ~throwable-sym
-                  ~binder (ex-data ~throwable-sym)]
+                  ~binder ~data-sym]
               ~@body)]
        [condition wrapped-form])
 
@@ -61,7 +61,8 @@
   (let [[body clauses] (split-with (complement clause?) exprs)
         [handlers finalies] (split-with (complement finally?) clauses)
         t (gensym "t")
-        cond-clauses (mapcat #(cond-clause % t) handlers)]
+        data-name (gensym "info")
+        cond-clauses (mapcat #(cond-clause % t data-name) handlers)]
     `(try
        ~@body
        ;; TODO: we could do some compile-time checks of the classes
@@ -69,7 +70,8 @@
        ;; exceptions than necessary. Presumably most uses will only
        ;; be interested in IExceptionInfo.
        (catch Throwable ~t
-         (cond
-          ~@cond-clauses
-          :else (throw ~t)))
+         (let [~data-name (ex-data ~t)]
+           (cond
+            ~@cond-clauses
+            :else (throw ~t))))
        ~@finalies)))
