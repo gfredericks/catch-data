@@ -64,6 +64,10 @@
         cond-clauses (mapcat #(cond-clause % t) handlers)]
     `(try
        ~@body
+       ;; TODO: we could do some compile-time checks of the classes
+       ;; involved so that we don't catch a more general class of
+       ;; exceptions than necessary. Presumably most uses will only
+       ;; be interested in IExceptionInfo.
        (catch Throwable ~t
          (cond
           ~@cond-clauses
