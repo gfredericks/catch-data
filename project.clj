@@ -1,4 +1,4 @@
-(defproject com.gfredericks/catch-data "0.1.1"
+(defproject com.gfredericks/catch-data "0.1.2-SNAPSHOT"
   :description "Clojure data-based exception handling."
   :url "https://github.com/fredericksgary/catch-data"
   :license {:name "Eclipse Public License"
