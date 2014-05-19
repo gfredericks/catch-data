@@ -53,3 +53,10 @@
               (catch-data :foo bar bar)
               (finally (swap! a inc)))))
       (is (= 1 @a)))))
+
+;; regression for https://github.com/fredericksgary/catch-data/issues/1
+(deftest catch-and-use-binding-test
+  (is (= :first-clause
+         (try+ (throw (ex-info "foo" {}))
+               (catch-data (constantly true) m :first-clause)
+               (catch Throwable t (println :err t))))))

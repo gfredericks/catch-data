@@ -15,7 +15,8 @@
     (cond
      (= 'catch handler-name)
      [`(instance? ~pred ~throwable-sym)
-      (cons 'do body)]
+      `(let [~binder ~throwable-sym]
+         ~@body)]
 
      (= 'catch-data handler-name)
      (let [condition
