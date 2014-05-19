@@ -12,7 +12,9 @@ it has a lot of unnecessary features.
 
 ## Usage
 
-Leiningen: `[com.gfredericks/catch-data "0.1.0"]`
+Leiningen dependency coordinates:
+
+[![version](https://clojars.org/com.gfredericks/catch-data/latest-version.svg)](https://clojars.org/com.gfredericks/catch-data)
 
 ``` clojure
 (require '[com.gfredericks.catch-data :refer [try+]])
