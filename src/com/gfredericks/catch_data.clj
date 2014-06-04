@@ -76,3 +76,13 @@
             ~@cond-clauses
             :else (throw ~t))))
        ~@finalies)))
+
+(defmacro throw-data
+  "Like clojure clojure.core/throw but takes the same arguments as
+   clojure.core/ex-info and then proceeds to throw the ExceptionInfo
+   instance.
+
+     (throw-data \"Oh noes!\" {:foo :bar})
+     (throw-data \"Oh noes!\" {:foo :bar} (Throwable. \"Just because\"))"
+  [& args]
+  `(throw (ex-info ~@args)))
