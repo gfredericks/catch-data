@@ -77,12 +77,22 @@
             :else (throw ~t))))
        ~@finalies)))
 
-(defmacro throw-data
-  "Like clojure clojure.core/throw but takes the same arguments as
-   clojure.core/ex-info and then proceeds to throw the ExceptionInfo
-   instance.
+(defmacro locals
+  "Expands to a map of the locals in scope."
+  []
+  (into {} (for [name (keys &env)]
+             [(list 'quote name) name])))
 
-     (throw-data \"Oh noes!\" {:foo :bar})
-     (throw-data \"Oh noes!\" {:foo :bar} (Throwable. \"Just because\"))"
-  [& args]
-  `(throw (ex-info ~@args)))
+(defmacro throw-data
+  "Like clojure's builtin throw, but takes the same arguments as
+  clojure.core/ex-info and then proceeds to throw the ExceptionInfo
+  instance.
+
+    (throw-data \"Oh noes!\" {:foo :bar})
+    (throw-data \"Oh noes!\" {:foo :bar} (Throwable. \"Just because\"))
+
+  Will also add a map of locals under the :com.gfredericks.catch-data/locals
+  key of the map's metadata."
+  ([msg map] `(throw-data ~msg ~map nil))
+  ([msg map cause]
+     `(throw (ex-info ~msg (vary-meta ~map assoc ::locals (locals)) ~cause))))
