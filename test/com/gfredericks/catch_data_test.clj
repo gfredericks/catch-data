@@ -1,6 +1,6 @@
 (ns com.gfredericks.catch-data-test
   (:require [clojure.test :refer :all]
-            [com.gfredericks.catch-data :refer [try+]]))
+            [com.gfredericks.catch-data :refer [try+ throw-data]]))
 
 (deftest normal-test
   (is (= 13 (try+ (throw (ex-info "aarg" {:foo 12}))
@@ -60,3 +60,9 @@
          (try+ (throw (ex-info "foo" {}))
                (catch-data (constantly true) m :first-clause)
                (catch Throwable t (println :err t))))))
+
+(deftest throw-data-test
+  (is (= :bar
+         (try+ (throw-data "meh" {:foo :bar})
+               (catch-data (constantly true) m
+                           (:foo m))))))
