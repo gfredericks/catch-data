@@ -93,6 +93,7 @@
 
   Will also add a map of locals under the :com.gfredericks.catch-data/locals
   key of the map's metadata."
+  ([msg] `(throw-data ~msg {}))
   ([msg map] `(throw-data ~msg ~map nil))
   ([msg map cause]
      `(throw (ex-info ~msg (vary-meta ~map assoc ::locals (locals)) ~cause))))
