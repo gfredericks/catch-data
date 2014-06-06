@@ -10,11 +10,15 @@ At the moment slingshot doesn't deal fluently with `ExceptionInfo`
 objects, and if you're only planning on using `ExceptionInfo` then
 it has a lot of unnecessary features.
 
-## Usage
+## Obtainage
 
 Leiningen dependency coordinates:
 
 [![version](https://clojars.org/com.gfredericks/catch-data/latest-version.svg)](https://clojars.org/com.gfredericks/catch-data)
+
+## Usage
+
+### `try+`
 
 ``` clojure
 (require '[com.gfredericks.catch-data :refer [try+]])
@@ -33,6 +37,24 @@ to get a handle on the exception object itself.
 `catch-data` clauses can be intermingled with `catch` clauses, and
 each will be tried in order. Currently `try+` compiles to a single
 `catch` clause with a `cond` as the body.
+
+### `throw-data`
+
+`throw-data` is a helper macro that is equivalent to `(throw (ex-info
+...))`, but it also captures locals and makes them available in the
+metadata of the exception's data map.
+
+``` clojure
+(require '[com.gfredericks.catch-data :refer [throw-data]])
+
+(let [x 42]
+  (try
+    (let [y 59]
+      (throw-data "Oh noes!" {:foo []}))
+    (catch clojure.lang.ExceptionInfo e
+      (-> e ex-data meta :com.gfredericks.catch-data/locals))))
+;; => {y 59, x 42}
+```
 
 ## License
 
