@@ -41,8 +41,7 @@ each will be tried in order. Currently `try+` compiles to a single
 ### `throw-data`
 
 `throw-data` is a helper macro that is equivalent to `(throw (ex-info
-...))`, but it also captures locals and makes them available in the
-metadata of the exception's data map.
+...))`. For people who like sugar.
 
 ``` clojure
 (require '[com.gfredericks.catch-data :refer [throw-data]])
@@ -50,10 +49,10 @@ metadata of the exception's data map.
 (let [x 42]
   (try
     (let [y 59]
-      (throw-data "Oh noes!" {:foo []}))
+      (throw-data "Oh noes!" {:foo [:hey]}))
     (catch clojure.lang.ExceptionInfo e
-      (-> e ex-data meta :com.gfredericks.catch-data/locals))))
-;; => {y 59, x 42}
+      (-> e ex-data :foo))))
+;; => [:hey]
 ```
 
 ## License
