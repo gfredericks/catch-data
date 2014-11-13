@@ -1,5 +1,9 @@
 # catch-data changelog
 
+## 0.1.3
+
+Remove locals-capture from `throw-data`.
+
 ## 0.1.2
 
 Adds the throw-data macro, which captures locals and adds them as
