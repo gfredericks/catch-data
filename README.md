@@ -14,7 +14,7 @@ it has a lot of unnecessary features.
 
 Leiningen dependency coordinates:
 
-`[com.gfredericks/catch-data "0.1.2"]`
+`[com.gfredericks/catch-data "0.1.3"]`
 
 ## Usage
 
