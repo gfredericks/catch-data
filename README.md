@@ -14,7 +14,7 @@ it has a lot of unnecessary features.
 
 Leiningen dependency coordinates:
 
-[![version](https://clojars.org/com.gfredericks/catch-data/latest-version.svg)](https://clojars.org/com.gfredericks/catch-data)
+`[com.gfredericks/catch-data "0.1.2"]`
 
 ## Usage
 
