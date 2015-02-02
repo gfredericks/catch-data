@@ -77,6 +77,7 @@
             :else (throw ~t))))
        ~@finalies)))
 
+;; This is a macro primarily so it doesn't pollute the stacktrace
 (defmacro throw-data
   "Like clojure's builtin throw, but takes the same arguments as
   clojure.core/ex-info and then proceeds to throw the ExceptionInfo
