@@ -10,7 +10,7 @@ At the moment slingshot doesn't deal fluently with `ExceptionInfo`
 objects, and if you're only planning on using `ExceptionInfo` then
 it has a lot of unnecessary features.
 
-## Obtainage
+## Obtention
 
 Leiningen dependency coordinates:
 
