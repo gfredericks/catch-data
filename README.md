@@ -40,20 +40,24 @@ each will be tried in order. Currently `try+` compiles to a single
 
 ### `throw-data`
 
-`throw-data` is a helper macro that is equivalent to `(throw (ex-info
-...))`. For people who like sugar.
+`throw-data` is a helper macro for throwing `ex-info` objects, that
+not only saves you a pair of parentheses but also lets you reference
+values from your data map in your error message:
 
 ``` clojure
 (require '[com.gfredericks.catch-data :refer [throw-data]])
 
-(let [x 42]
-  (try
-    (let [y 59]
-      (throw-data "Oh noes!" {:foo [:hey]}))
-    (catch clojure.lang.ExceptionInfo e
-      (-> e ex-data :foo))))
-;; => [:hey]
+(try
+  (let [y :hooha]
+    (throw-data " I wanted a number but you gave me %arg~s!"
+                {:arg y}))
+  (catch clojure.lang.ExceptionInfo e
+    [(.getMessage e) (ex-data e)]))
+;; => [" I wanted a number but you gave me :hooha!" {:arg :hooha}]
 ```
+
+See the [like-format-but-with-named-args](https://github.com/gfredericks/like-format-but-with-named-args)
+documentation for syntax details.
 
 ## License
 

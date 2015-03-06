@@ -1,4 +1,5 @@
-(ns com.gfredericks.catch-data)
+(ns com.gfredericks.catch-data
+  (:require [com.gfredericks.like-format-but-with-named-args :refer [named-format]]))
 
 (defn ^:private clause?
   [x]
@@ -84,8 +85,20 @@
   instance.
 
     (throw-data \"Oh noes!\" {:foo :bar})
-    (throw-data \"Oh noes!\" {:foo :bar} (Throwable. \"Just because\"))"
+    (throw-data \"Oh noes!\" {:foo :bar} (Throwable. \"Just because\"))
+
+  The error message can also include references to values in the map,
+  by using format specifiers, e.g.:
+
+    (throw-data \"I wanted a number but you gave me %arg~s!\"
+                {:arg arg})
+
+  See com.gfredericks/like-format-but-with-named-args/named-format for
+  details."
   ([msg] `(throw-data ~msg {}))
   ([msg map] `(throw-data ~msg ~map nil))
   ([msg map cause]
-     `(throw (ex-info ~msg ~map ~cause))))
+     `(let [data# ~map
+            msg# (named-format ~msg data#)]
+        (throw
+         (ex-info msg# data# ~cause)))))

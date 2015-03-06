@@ -66,3 +66,11 @@
          (try+ (throw-data "meh" {:foo :bar})
                (catch-data (constantly true) m
                            (:foo m))))))
+
+(deftest throw-data-with-arg-references-test
+  (let [e (try
+            (throw-data "Here is %num~.3f and %str~s."
+                        {:num Math/PI :str "yes"})
+            (catch Exception e e))]
+    (is (= "Here is 3.142 and yes." (.getMessage e)))
+    (is (= {:num Math/PI :str "yes"} (ex-data e)))))
