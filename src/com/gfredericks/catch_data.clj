@@ -41,6 +41,14 @@
      (throw (AssertionError.
              (str "Unknown try+ clause: " (pr-str clause)))))))
 
+(defn sub-data
+  "Returns a predicate fn that checks whether the given key-value
+   pairs are present in the exception data"
+  [& key-vals]
+  (fn [data-map]
+    (let [sub-map (apply hash-map key-vals)]
+      (= (select-keys data-map (keys sub-map)) sub-map))))
+
 (defmacro try+
   "Like clojure's try, but allows catch-data clauses alongside catch
    clauses. A catch-data clause has the same structure as a catch
