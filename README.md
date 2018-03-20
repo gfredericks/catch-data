@@ -49,11 +49,11 @@ values from your data map in your error message:
 
 (try
   (let [y :hooha]
-    (throw-data " I wanted a number but you gave me %arg~s!"
+    (throw-data "I wanted a number but you gave me %arg~s!"
                 {:arg y}))
   (catch clojure.lang.ExceptionInfo e
     [(.getMessage e) (ex-data e)]))
-;; => [" I wanted a number but you gave me :hooha!" {:arg :hooha}]
+;; => ["I wanted a number but you gave me :hooha!" {:arg :hooha}]
 ```
 
 See the [like-format-but-with-named-args](https://github.com/gfredericks/like-format-but-with-named-args)
