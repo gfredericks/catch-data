@@ -1,6 +1,6 @@
 (ns com.gfredericks.catch-data-test
   (:require [clojure.test :refer :all]
-            [com.gfredericks.catch-data :refer [try+ throw-data]]))
+            [com.gfredericks.catch-data :refer [try+ throw-data sub-data]]))
 
 (deftest normal-test
   (is (= 13 (try+ (throw (ex-info "aarg" {:foo 12}))
@@ -32,6 +32,14 @@
                          (-> m
                              (get 5)
                              (+ 36)))))))
+
+(deftest sub-data-predicate-test
+  (is (= :something (try+
+                      (throw (ex-info "" {:code :red :reason :something}))
+                      (catch-data (sub-data :code :blue) m
+                        m)
+                      (catch-data (sub-data :code :red) {reason :reason}
+                        reason)))))
 
 (deftest finally-test
   (testing "without error"
